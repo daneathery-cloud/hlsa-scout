@@ -3,6 +3,12 @@
 Version numbers: MAJOR.MINOR.PATCH. The version shows in the window title, the top-right of every page and the README.
 Bump `APP_VERSION` / `APP_VERSION_DATE` in `config.py` (and the README line) for every change.
 
+## 1.2.0 - 2026-10-27
+- Hand-off to HLSA Pipeline (the CRM): the phone edition now also publishes `leads.json` (the same public
+  NPI registry and news data already shown on its pages), which the CRM's Scout Leads tab reads.
+- Desktop Watchlist: new "Send to HLSA Pipeline" button downloads your saved items (with status and notes)
+  as a file the CRM can load.
+
 ## 1.1.0 - 2026-10-25
 - Phone edition: https://daneathery-cloud.github.io/hlsa-scout/ - the same pages, built from a scan GitHub runs twice a
   day (about 7:15 am / 4:15 pm Central) and after every code change. Per-phone watchlist with status/notes, share,

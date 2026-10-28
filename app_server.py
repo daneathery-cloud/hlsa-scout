@@ -3,6 +3,7 @@ this computer - never the network or internet."""
 import csv
 import datetime as dt
 import io
+import json
 import logging
 import socket
 import threading
@@ -11,6 +12,7 @@ from flask import Flask, jsonify, make_response, request, send_file
 
 import config
 import diagnostics
+import pipeline_export
 import render
 import store
 from scanners import news
@@ -100,6 +102,13 @@ def create_app(conn) -> Flask:
         resp = _html(render.watchlist_export_html(store.list_items(conn)))
         resp.headers["Content-Disposition"] = (
             f'attachment; filename="HLSA_Scout_Watchlist_{dt.datetime.now():%Y%m%d_%H%M}.html"')
+        return resp
+
+    @app.get("/export/pipeline.json")
+    def export_pipeline():
+        resp = make_response(json.dumps(pipeline_export.from_watchlist(store.list_items(conn)), indent=1))
+        resp.headers["Content-Type"] = "application/json; charset=utf-8"
+        resp.headers["Content-Disposition"] = f'attachment; filename="HLSA_Scout_Leads_{dt.datetime.now():%Y%m%d_%H%M}.json"'
         return resp
 
     @app.get("/export/watchlist.csv")

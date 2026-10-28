@@ -20,8 +20,8 @@ README_PATH = resource_path("README.html")
 
 APP_NAME = "HLSA Scout"
 APP_SUBTITLE = "Local Healthcare Opportunity Intelligence"
-APP_VERSION = "1.1.0"
-APP_VERSION_DATE = "2026-10-25"
+APP_VERSION = "1.2.0"
+APP_VERSION_DATE = "2026-10-27"
 
 # The phone edition (built by site_builder.py on GitHub, see .github/workflows/scan.yml)
 PHONE_URL = "https://daneathery-cloud.github.io/hlsa-scout/"

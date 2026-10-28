@@ -564,7 +564,8 @@ def watchlist_page(items: list) -> str:
         f'({sum(1 for i in items if i["status"] == s)})</button>' for s in store.STATUSES]
     body = f"""<div class="page-actions">
         <a class="btn red" href="/export/watchlist" title="A self-contained page you can email or post in Teams">\U0001F4E4 Share Watchlist as Report</a>
-        <a class="btn" href="/export/watchlist.csv" title="Opens in Excel">⬇ Download for Excel (CSV)</a></div>
+        <a class="btn" href="/export/watchlist.csv" title="Opens in Excel">⬇ Download for Excel (CSV)</a>
+        <a class="btn" href="/export/pipeline.json" title="Load this file in HLSA Pipeline &gt; Scout Leads">➜ Send to HLSA Pipeline</a></div>
       <div class="filters"><span class="lbl">Status</span>{''.join(chips)}
         <input type="search" id="q" placeholder="Search watchlist..." oninput="applyFilters()"></div>
       <p class="meta">{len(items)} saved. Status and notes save automatically as you type.</p>

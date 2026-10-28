@@ -15,6 +15,7 @@ import shutil
 import requests
 
 import config
+import pipeline_export
 import render
 import site_assets
 from scanners import news
@@ -142,6 +143,7 @@ def build_site(result: dict, out_dir: str, site_url: str = config.PHONE_URL, pro
 
     dump("free.json", free)
     dump("npi_seen.json", seen)
+    dump("leads.json", pipeline_export.from_scan(result))   # read by HLSA Pipeline (CRM)
     dump("version.json", {"build": build_id, "app_version": config.APP_VERSION, "scan_epoch": generated.timestamp(),
                           "scan_label": scan_label, "stories": len(result["stories"]), "orgs": len(result["orgs"])})
     with open(os.path.join(out_dir, "manifest.webmanifest"), "w", encoding="utf-8") as f:
