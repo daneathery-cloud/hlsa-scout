@@ -20,8 +20,8 @@ README_PATH = resource_path("README.html")
 
 APP_NAME = "HLSA Scout"
 APP_SUBTITLE = "Local Healthcare Opportunity Intelligence"
-APP_VERSION = "1.2.0"
-APP_VERSION_DATE = "2026-10-27"
+APP_VERSION = "1.3.0"
+APP_VERSION_DATE = "2026-10-31"
 
 # The phone edition (built by site_builder.py on GitHub, see .github/workflows/scan.yml)
 PHONE_URL = "https://daneathery-cloud.github.io/hlsa-scout/"
@@ -259,3 +259,72 @@ DISCLAIMER = (
     "only the publisher's own public headline and teaser are shown; no paywall is bypassed. Always confirm details "
     "directly before reaching out."
 )
+
+# =========================================================================
+# Market & Plan tab (NT Partnership market analysis + business plan).
+# Desktop only - never published to the public phone edition.
+# =========================================================================
+MARKET_CACHE_DAYS = 7
+
+# Competitor landscape. Firm-level market shares for staffing / credentialing
+# companies are not published anywhere, so this is a researched list (Oct 2026,
+# from the firms' own sites and job postings) - edit freely as you learn more.
+# (name, kind, model, note, url)
+COMPETITORS = [
+    ("BrightStar Care - Metro San Antonio", "Staffing", "Franchise: home care + medical staffing",
+     "Local franchise doing both private-duty care and facility staffing", "https://brightstarcare.com/metro-san-antonio"),
+    ("Thrive Staffing", "Staffing", "Travel, direct placement, PRN, home health",
+     "Lists home health and case management among San Antonio services", "https://thrivestaffing.com/"),
+    ("A-Line Staffing Solutions", "Staffing", "National light-industrial + healthcare staffing",
+     "Posts full-time home health RN roles in San Antonio (78232)", ""),
+    ("SkyBridge Healthcare / Healthcare Support", "Staffing", "Travel contracts (13-week)",
+     "Travel home health RN assignments around $2,000/week", ""),
+    ("AHS Staffing, Fastaff, MedPro, AMN, Aya, Cross Country", "Staffing", "National travel-nurse firms",
+     "Dominate hospital travel contracts in Austin & San Antonio; little boutique home health focus", ""),
+    ("Nursa (app)", "Staffing", "Per-diem shift marketplace app",
+     "Facilities post RN/LVN/CNA shifts; price pressure on per-diem fill", "https://nursa.com/"),
+    ("Nurses Etc Staffing (HLSA partner)", "Staffing - collaborator", "Local, travel & government staffing since 2000",
+     "HLSA Trusted Referral Partner: position as a collaborator (they cover travel/government/hospital; "
+     "NT focuses on boutique home health placements) and refer overflow both ways", "https://nursesetc.net/"),
+    ("Medwave", "Credentialing", "Billing + credentialing outsourcer",
+     "Markets credentialing to San Antonio, New Braunfels, Schertz, Seguin, Boerne, Helotes",
+     "https://medwave.io/san-antonio-medical-billing-credentialing-services"),
+    ("Practolytics", "Credentialing", "Full RCM incl. credentialing (remote)", "Publishes San Antonio credentialing rankings (self-promotional)",
+     "https://practolytics.com/blog/medical-credentialing-services-companies-in-san-antonio/"),
+    ("Athelas, iRCM, Access Healthcare", "Credentialing", "Tech-enabled / offshore volume credentialing",
+     "Price-competitive, remote; weaker on local hospital-privileging relationships", ""),
+    ("Credex Healthcare", "Credentialing", "Houston-based, credentialing-first, nationwide", "", ""),
+    ("In-house hospital MSOs & practice staff", "Credentialing", "Health systems' own credentialing offices",
+     "University Health, Methodist, Baptist, CHRISTUS credential their own employed physicians - "
+     "NT's opening is independents, new practices and hospital-privileging help for them", ""),
+    ("Wave Online (HLSA partner)", "Credentialing - collaborator", "Revenue cycle management",
+     "HLSA Trusted Referral Partner: pair credentialing/payer enrollment (NT) with billing (Wave) as one offer", "https://wavehca.com/"),
+]
+
+# The HLSA Consulting Collective: ad hoc teams drawn from HLSA's membership and
+# Trusted Referral Partners, with NT Partnership as the contracting/coordinating firm.
+CONSULTING_LINES = [
+    ("Strategic planning & growth", "Market entry, expansion and service-line plans for practices and agencies",
+     ["arista", "ascent"]),
+    ("Financial analysis & fractional CFO", "Pro formas, cash-flow rescue, budgeting, lender packages", ["ascent"]),
+    ("Revenue cycle & payer strategy", "Denials, aged A/R, payer mix, enrollment + billing set-up", ["wave"]),
+    ("Practice / agency start-up package", "Entity-to-opening: credentialing, payer enrollment, staffing, billing, marketing",
+     ["nt_cred", "nt_staff", "wave", "macro"]),
+    ("Ownership transitions", "Valuation prep, buyer/seller readiness, post-close integration", ["vested", "ascent"]),
+    ("Leadership & organizational development", "Executive coaching, leadership teams, succession", ["arista"]),
+    ("Remote patient monitoring program set-up", "RPM/CCM program design and launch for primary care", ["mr3"]),
+    ("Surgical / patient readiness", "Pre-procedure workflow and readiness programs", ["orchestra"]),
+    ("Marketing & patient acquisition", "Brand, web, referral marketing, grand openings", ["macro"]),
+    ("Compliance & HIPAA workflow", "Policies, risk assessments, staff training (HLSA member experts)", []),
+]
+
+# Financial-model starting assumptions (editable on the tab; saved per computer).
+PLAN_DEFAULTS = {
+    "placements_y1": 12, "placements_y2": 24, "placements_y3": 36,
+    "avg_salary": 70000, "placement_fee_pct": 20, "falloff_pct": 10,
+    "cred_new_y1": 30, "cred_new_y2": 60, "cred_new_y3": 90, "cred_fee": 1200,
+    "cred_maint_y1": 20, "cred_maint_y2": 50, "cred_maint_y3": 90, "cred_maint_monthly": 100,
+    "consult_y1": 4, "consult_y2": 8, "consult_y3": 12, "consult_avg": 15000, "consult_payout_pct": 60,
+    "cost_recruiting": 6000, "cost_software": 3000, "cost_insurance": 5000, "cost_hlsa_sponsorship": 6000,
+    "cost_marketing": 4000, "cost_admin": 12000, "cost_staff": 0, "growth_costs_pct": 10,
+}

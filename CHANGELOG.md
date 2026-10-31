@@ -3,6 +3,17 @@
 Version numbers: MAJOR.MINOR.PATCH. The version shows in the window title, the top-right of every page and the README.
 Bump `APP_VERSION` / `APP_VERSION_DATE` in `config.py` (and the README line) for every change.
 
+## 1.3.0 - 2026-10-31
+- New laptop-only tab "Market & Plan": NT Partnership market analysis and business plan.
+  - Market data (scanners/market.py, cached a week): CMS home health + hospice enrollments, owners and 2024 Medicare
+    volume (market share by parent owner, HHI, chain vs owner-operated), nursing-home Payroll-Based Journal contract
+    hours, Medicare-billing clinicians by specialty, BLS workforce and pay for the SA and Austin metros.
+  - Uses HLSA Scout's own scan too: new NPI organizations (new-practice formation) and regional stories.
+  - Ranked niche opportunities with evidence and named targets; researched competitor landscape (config.COMPETITORS).
+  - 12-section business plan incl. the HLSA Consulting Collective and the HLSA relationship structure.
+  - Editable 3-year financial model (saved per computer); "Download business plan" (Word-openable).
+- Never published to the phone edition.
+
 ## 1.2.0 - 2026-10-27
 - Hand-off to HLSA Pipeline (the CRM): the phone edition now also publishes `leads.json` (the same public
   NPI registry and news data already shown on its pages), which the CRM's Scout Leads tab reads.

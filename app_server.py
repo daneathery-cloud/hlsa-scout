@@ -14,6 +14,8 @@ import config
 import diagnostics
 import pipeline_export
 import render
+import render_market
+import scan_runner
 import store
 from scanners import news
 
@@ -88,6 +90,53 @@ def create_app(conn) -> Flask:
         except OSError:
             readme = "<p>README not found.</p>"
         return _html(render.about_page(readme))
+
+    # ---- Market & Plan (desktop only)
+    def _assumptions() -> dict:
+        a = dict(config.PLAN_DEFAULTS)
+        try:
+            a.update({k: float(v) for k, v in json.loads(store.get_setting(conn, "plan_assumptions", "{}")).items()
+                      if k in config.PLAN_DEFAULTS})
+        except (ValueError, TypeError):
+            pass
+        return a
+
+    def _market_cached():
+        m, _ = store.cache_get(conn, "market")
+        return m
+
+    @app.get("/market")
+    def market_page():
+        return _html(render_market.market_page(_market_cached(), state.get(), _assumptions()))
+
+    @app.post("/api/market/refresh")
+    def market_refresh():
+        try:
+            scan_runner.market_data(conn, force=True)
+            return jsonify({"ok": True})
+        except Exception as e:
+            log.exception("Market refresh failed")
+            return jsonify({"ok": False, "error": f"{type(e).__name__}: {e}"}), 500
+
+    @app.route("/api/market/assumptions", methods=["POST", "DELETE"])
+    def market_assumptions():
+        if request.method == "DELETE":
+            store.set_setting(conn, "plan_assumptions", "{}")
+            return jsonify({"ok": True})
+        p = request.get_json(force=True, silent=True) or {}
+        clean = {k: float(v) for k, v in p.items() if k in config.PLAN_DEFAULTS and isinstance(v, (int, float))}
+        store.set_setting(conn, "plan_assumptions", json.dumps(clean))
+        return jsonify({"ok": True})
+
+    @app.get("/export/business_plan")
+    def export_plan():
+        m = _market_cached()
+        if not m:
+            return _html("<p>Load the market data on the Market &amp; Plan tab first.</p>", 404)
+        resp = _html(render_market.business_plan_export(m, state.get(), _assumptions()))
+        resp.headers["Content-Disposition"] = (
+            f'attachment; filename="NT_Partnership_Business_Plan_{dt.datetime.now():%Y%m%d}.html"')
+        return resp
 
     @app.get("/diagnostics")
     def diag():

@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 import config
 import store
-from scanners import news, npi
+from scanners import market, news, npi
 
 log = logging.getLogger("hlsascout.scan")
 
@@ -26,18 +26,41 @@ def _npi(conn, progress_cb, force: bool) -> dict:
     return result
 
 
-def run_full_scan(conn, progress_cb=None, force_npi: bool = False) -> dict:
+def market_data(conn, progress_cb=None, force: bool = False):
+    """The Market & Plan tab's data: cached for MARKET_CACHE_DAYS (the CMS/BLS sources
+    update quarterly or yearly). A failed refresh keeps the last good data."""
+    say = progress_cb or (lambda m: None)
+    cached, saved_at = store.cache_get(conn, "market")
+    if cached and not force and saved_at and dt.datetime.now() - saved_at < dt.timedelta(days=config.MARKET_CACHE_DAYS):
+        return cached
+    result = market.build(say)
+    if len(result["errors"]) < 3 or not cached:
+        store.cache_put(conn, "market", result)
+        return result
+    say("  Market data sources mostly unreachable - keeping the last good market data.")
+    return cached
+
+
+def run_full_scan(conn, progress_cb=None, force_npi: bool = False, with_market: bool = False) -> dict:
+    """with_market: also refresh the Market & Plan data when it's over a week old
+    (desktop only - the cloud phone build never needs it)."""
     def say(msg):
         if progress_cb:
             progress_cb(msg)
 
     started = dt.datetime.now()
     say("Starting scan...")
-    with ThreadPoolExecutor(2) as ex:
+    with ThreadPoolExecutor(3) as ex:
         news_f = ex.submit(news.scan, say)
         npi_f = ex.submit(_npi, conn, say, force_npi)
+        market_f = ex.submit(market_data, conn, say) if with_market else None
         news_result = news_f.result()
         npi_result = npi_f.result()
+        if market_f:
+            try:
+                market_f.result()
+            except Exception:
+                log.exception("Market data refresh failed")   # never breaks the scan itself
 
     orgs = npi_result["orgs"]
     seen = store.mark_npis_seen(conn, [o["npi"] for o in orgs])

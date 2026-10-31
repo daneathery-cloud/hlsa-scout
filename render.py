@@ -365,7 +365,9 @@ def _shell(active: str, body: str, title: str = "") -> str:
     tabs = [("scan", "/", "\U0001F4CA Scan Report"), ("wire", "/wire", "\U0001F4F0 Opportunity Wire"),
             ("orgs", "/orgs", "\U0001F195 New Organizations"), ("watch", "/watchlist", "⭐ Watchlist"),
             ("about", "/about", "ℹ️ About")]
-    nav = "".join(f'<a href="{_u(p)}" class="{"active" if k == active else ""}">{l}</a>' for k, p, l in tabs)
+    if not STATIC["on"]:    # NT Partnership's plan stays off the public phone edition
+        tabs.insert(4, ("market", "/market", "\U0001F4C8 Market & Plan"))
+    nav ="".join(f'<a href="{_u(p)}" class="{"active" if k == active else ""}">{l}</a>' for k, p, l in tabs)
     st = STATIC
     if st["on"]:
         import site_assets

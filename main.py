@@ -99,7 +99,7 @@ class App:
     def _run_scan(self):
         t0 = time.time()
         try:
-            result = scan_runner.run_full_scan(self.conn, progress_cb=self.log)
+            result = scan_runner.run_full_scan(self.conn, progress_cb=self.log, with_market=True)
             app_server.state.set_scan(result)
             applog.runtime["last_scan"] = {"finished": f"{dt.datetime.now():%Y-%m-%d %H:%M}", "ok": True,
                                            "seconds": round(time.time() - t0),
@@ -136,7 +136,7 @@ def self_test():
     db, how = paths.db_path()
     conn = store.get_conn(db)
     try:
-        r = scan_runner.run_full_scan(conn, progress_cb=log.info)
+        r = scan_runner.run_full_scan(conn, progress_cb=log.info, with_market=True)
         log.info("SELF-TEST OK: %d stories, %d organizations", len(r["stories"]), len(r["orgs"]))
     except Exception:
         log.exception("SELF-TEST FAILED")
