@@ -20,7 +20,7 @@ README_PATH = resource_path("README.html")
 
 APP_NAME = "HLSA Scout"
 APP_SUBTITLE = "Local Healthcare Opportunity Intelligence"
-APP_VERSION = "1.3.0"
+APP_VERSION = "1.3.1"
 APP_VERSION_DATE = "2026-10-31"
 
 # The phone edition (built by site_builder.py on GitHub, see .github/workflows/scan.yml)
@@ -300,6 +300,12 @@ COMPETITORS = [
     ("Wave Online (HLSA partner)", "Credentialing - collaborator", "Revenue cycle management",
      "HLSA Trusted Referral Partner: pair credentialing/payer enrollment (NT) with billing (Wave) as one offer", "https://wavehca.com/"),
 ]
+
+# NT Partnership's principals live in plan_private.py (git-ignored: the GitHub repository is public).
+try:
+    from plan_private import PRINCIPALS
+except ImportError:
+    PRINCIPALS = [("[Principal 1]", "Principal", "[Background]"), ("[Principal 2]", "Principal", "[Background]")]
 
 # The HLSA Consulting Collective: ad hoc teams drawn from HLSA's membership and
 # Trusted Referral Partners, with NT Partnership as the contracting/coordinating firm.

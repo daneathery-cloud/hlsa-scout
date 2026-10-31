@@ -406,6 +406,7 @@ def plan_html(m: dict, scan: dict | None, a: dict, niches: list | None = None) -
     y1, y3 = model["years"][0], model["years"][2]
     indep_n = len([x for x in hh.get("agencies", []) if x["group_type"].startswith("Independent")])
     fill = lambda t: f'<span class="fill">[{_esc(t)}]</span>'
+    principals = "".join(f"<p><b>{_esc(name)}</b> - <i>{_esc(role)}</i><br>{_esc(bio)}</p>" for name, role, bio in config.PRINCIPALS)
     lines = "".join(f"<li><b>{_esc(n)}</b> - {_esc(d)}" + (f" <i>(partners: {_esc(', '.join(config.PARTNERS[p][0] for p in ps))})</i>" if ps else "") + "</li>"
                     for n, d, ps in config.CONSULTING_LINES)
     niche_list = "".join(f"<li><b>{_esc(n['title'])}</b> - {_esc(n['ev'])}</li>" for n in niches)
@@ -415,25 +416,37 @@ def plan_html(m: dict, scan: dict | None, a: dict, niches: list | None = None) -
 health), <b>physician and provider credentialing / payer enrollment</b>, and - through its relationship with Healthcare Leaders of
 San Antonio (HLSA) - <b>ad hoc consulting teams</b> drawn from HLSA's membership and Trusted Referral Partners. It serves
 independent practices, home health and hospice agencies, nursing facilities and new healthcare organizations across Bexar County,
-the surrounding counties, the I-35 Corridor to Austin and the rural Hill Country.</p>
+the surrounding counties, the I-35 Corridor to Austin and the rural Hill Country. Its principals are
+{' and '.join(_esc(p[0]) for p in config.PRINCIPALS)}; the business is in the planning stage, ahead of forming a Texas LLC.</p>
 <p>The market is large and fragmented: {len(hh.get('agencies', []))} Medicare home health agencies ({indep_n} owner-operated),
 {len(ho.get('agencies', []))} hospices, {len(cl.get('facilities', []))} nursing homes buying {cl.get('contract_hours', 0):,} contract
 nursing hours a quarter, {cn.get('total', 0):,} Medicare-billing clinicians, and {len(orgs) or 'dozens of'} new healthcare
 organizations registering every 90 days. On the starting assumptions, NT Partnership reaches {_money(y1['revenue'], False)} revenue in
 year 1 and {_money(y3['revenue'], False)} in year 3, with {_money(y3['net'], False)} before owners' compensation in year 3.</p>
 
-<h3>2. The company and the HLSA relationship</h3>
-<p>Principals: {fill('names, backgrounds, ownership split')}. Legal structure: {fill('LLC / partnership; state; insurance')}.
-NT Partnership is the contracting and coordinating firm; HLSA is a volunteer professional network of healthcare decision-makers
-(monthly mixers, newsletter, webinars, sponsorships; an organization-reported 3,000+ invitees) and a talent pool of experienced
-executives, clinicians and specialists. The relationship gives NT Partnership three things competitors lack: <b>warm access</b> to owners
-and administrators, <b>credibility by association</b> with a trusted network, and <b>bench strength</b> to staff consulting teams without
-carrying salaries.</p>
-<p><b>How the relationship is structured (recommended):</b> NT Partnership contracts with clients and engages HLSA members and partners as
+<h3>2. The company, its principals and the HLSA relationship</h3>
+<p><b>Status.</b> NT Partnership is in the planning stage: the principals are organizing the business and intend to form a Texas limited
+liability company (not yet filed). Ownership split: {fill('percentages')}. Formation steps are in the 12-month roadmap below.</p>
+<p><b>Principals.</b> The two principals bring complementary strengths - health administration, strategy and nursing-workforce
+experience on one side; physician relationships, sales, capital and deal structuring on the other - and both already sell into the same
+San Antonio healthcare community through HLSA and Wave Online.</p>
+{principals}
+<p><b>HLSA.</b> Healthcare Leaders of San Antonio was founded and is led by {config.PRINCIPALS[0][0]} as president, who sets its strategic
+direction with the help of an informal advisory board. HLSA is not yet incorporated; the intent is to organize it as an LLC and/or a tax-exempt
+organization. It is a volunteer professional network of healthcare decision-makers (monthly mixers, newsletter, webinars, sponsorships;
+an organization-reported 3,000+ invitees) and a talent pool of experienced executives, clinicians and specialists. NT Partnership is the
+contracting and coordinating firm; the relationship gives it three things competitors lack: <b>warm access</b> to owners and administrators,
+<b>credibility by association</b> with a trusted network, and <b>bench strength</b> to staff consulting teams without carrying salaries.</p>
+<p><b>How the relationship is structured (recommended).</b> NT Partnership contracts with clients and engages HLSA members and partners as
 independent subcontractors for consulting work at agreed rates; NT supports HLSA through a <b>flat, fair-market-value sponsorship</b> rather
-than per-referral payments. In healthcare, paying for referrals of patients or Medicare/Medicaid business can raise Anti-Kickback and
-Texas patronage issues - have healthcare counsel review the HLSA agreement, subcontractor agreements and any partner revenue sharing
-before launch. {fill('agreed structure, HLSA board approval')}</p>
+than per-referral payments. Two things to settle with counsel and a CPA before launch:</p>
+<ul><li><b>Referral compensation.</b> In healthcare, paying for referrals of patients or Medicare/Medicaid business can raise Anti-Kickback
+and Texas patronage issues - keep payments flat and documented, never tied to referrals or patient volume.</li>
+<li><b>Related parties.</b> Because HLSA's president is also an NT Partnership principal, the NT-HLSA arrangement is a related-party
+transaction. Put it in writing, disclose it to HLSA's advisory board, and price it at fair market value now - it becomes a formal requirement
+if HLSA becomes tax-exempt (private-benefit and conflict-of-interest rules). Also worth asking: professional and business networking
+associations usually qualify as <b>501(c)(6)</b> business leagues rather than 501(c)(3) charities, which affects what HLSA can do and how
+sponsorships are treated.</li></ul>
 
 <h3>3. Services</h3>
 <ul><li><b>Boutique placements</b> - direct-hire RNs, LVNs, home health aides, therapists, coordinators and administrators for home health,
@@ -467,7 +480,8 @@ list; track leads in the Watchlist and HLSA Pipeline.</li>
 <li>Owner-to-owner selling: the start-up package for new practices; conversion offers for facilities heavy on contract labor.</li></ul>
 
 <h3>8. Operations and team</h3>
-<p>Core team: {fill('principals and roles; recruiter; credentialing specialist')}. Tools: an applicant tracking system, a credentialing
+<p>Core team: the two principals at launch ({fill('who leads placements vs. credentialing vs. consulting')}); a contract recruiter
+and credentialing specialist added as volume grows (see "Hired staff" in the financial model). Tools: an applicant tracking system, a credentialing
 tracker, HIPAA-appropriate document handling (BAAs where PHI is touched). Consulting engagements: NT scopes and contracts the work,
 assembles a team from HLSA members/partners, sets fixed-fee milestones and quality-reviews deliverables.</p>
 
@@ -478,13 +492,17 @@ year 3 revenue {_money(y3['revenue'], False)}. Start-up needs are modest - mainl
 weeks between placement and fee collection. {fill('capital available, owner draws, pricing confirmed')}</p>
 
 <h3>10. 12-month roadmap</h3>
-<ul><li>Months 1-2: agreements (HLSA, subcontractors, client templates), insurance, tools; pick two niches to lead with.</li>
+<ul><li>Months 1-2: form the Texas LLC (certificate of formation with the Secretary of State, operating agreement with the ownership split,
+EIN, business bank account); agreements (HLSA sponsorship, subcontractors, client templates, BAAs); insurance; tools; pick two niches to
+lead with.</li>
 <li>Months 2-4: first credentialing clients from new-NPI outreach; first placements with owner-operated home health agencies.</li>
 <li>Months 4-6: first HLSA Consulting Collective engagement; HLSA webinar; partner bundle offers.</li>
 <li>Months 6-12: rural-ring facility program; maintenance-retainer base; review pricing and the model against actuals.</li></ul>
 
 <h3>11. Risks and how they're handled</h3>
 <ul><li>Referral-compensation compliance - flat FMV sponsorship, counsel review, written agreements.</li>
+<li>Related-party perception (HLSA's president is an NT principal) - written agreement, advisory-board disclosure, open opportunities for
+other HLSA members and partners.</li>
 <li>Uneven placement cash flow - credentialing maintenance retainers as the steady base.</li>
 <li>Candidate scarcity - HLSA referrals, rural relocation incentives, partnership with Nurses Etc on overflow.</li>
 <li>Consultant quality and availability - vetted HLSA roster, scoped fixed-fee work, NT quality review.</li>

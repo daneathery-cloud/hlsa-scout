@@ -3,6 +3,11 @@
 Version numbers: MAJOR.MINOR.PATCH. The version shows in the window title, the top-right of every page and the README.
 Bump `APP_VERSION` / `APP_VERSION_DATE` in `config.py` (and the README line) for every change.
 
+## 1.3.1 - 2026-10-31
+- Business plan section 2: principals' bios, NT Partnership's pre-formation status, HLSA's leadership and organization,
+  related-party and 501(c)(6)-vs-(c)(3) considerations; LLC formation steps in the roadmap; related-party risk.
+- Principals' bios live in plan_private.py, which is git-ignored (the repository is public) and bundled only into the exe.
+
 ## 1.3.0 - 2026-10-31
 - New laptop-only tab "Market & Plan": NT Partnership market analysis and business plan.
   - Market data (scanners/market.py, cached a week): CMS home health + hospice enrollments, owners and 2024 Medicare
